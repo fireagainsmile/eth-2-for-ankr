@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   beacon_node:
     image: gcr.io/prysmaticlabs/prysm/beacon-chain:latest
@@ -9,7 +9,7 @@ services:
     volumes:
       - ./eth2:/data
       - ./config/beacon.yaml:/config/beacon.yaml:ro
-    command: --config-file=/config/validator.yaml
+    command: --config-file=/config/beacon.yaml
     restart: always
   validator_node:
     image: gcr.io/prysmaticlabs/prysm/validator:latest

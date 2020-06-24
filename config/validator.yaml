@@ -1,4 +1,4 @@
 datadir: /data
-keystore-path: /config/.eth2validators
-password: 123
+keystore-path: /config/
+password: "123"
 beacon-rpc-provider: beacon_node:4000
