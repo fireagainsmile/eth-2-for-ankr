@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  beacon_node:
+    image: gcr.io/prysmaticlabs/prysm/beacon-chain:latest
+    ports:
+      - "4000:4000"
+      - "13000:13000"
+      - "12000:12000/udp"
+    volumes:
+      - ./eth2:/data
+      - ./config/beacon.yaml:/config/beacon.yaml:ro
+    command: --config-file=/config/validator.yaml
+    restart: always
+  validator_node:
+    image: gcr.io/prysmaticlabs/prysm/validator:latest
+    restart: always
+    depends_on:
+      - beacon_node
+    volumes:
+      - ./validator:/data
+      - ./config/validator.yaml:/config/validator.yaml:ro
+    command: --config-file=/config/validator.yaml
