@@ -1,0 +1,23 @@
+version: '3'
+services:
+  celo-full:
+    image: ankrnetwork/celo:rc1
+    environment:
+      NETWORK_ID: 42220
+    command:
+      - sh
+      - -c
+      - |
+        set -x
+        echo '' > password
+        [ -d /root/.celo/keystore ] || geth account new --password password
+        export CELO_ACCOUNT_ADDRESS=0x`cat /root/.celo/keystore/* | jq -r '.address'`
+        geth init /celo/genesis.json
+        export BOOTNODE_ENODES=`cat /celo/bootnodes`
+        geth --verbosity 3 --networkid 42220 --syncmode full --rpc --rpcaddr 0.0.0.0 --rpcapi 'eth,net,web3,debug,admin,personal' --rpcvhosts '*' --light.serve 90 --light.maxpeers 1000 --maxpeers 1100 --etherbase 0x`cat /root/.celo/keystore/* | jq -r '.address'` --bootnodes `cat /celo/bootnodes` --nousb
+    volumes:
+      - /root/.celo
+    ports:
+      - 30303
+      - 8545
+      - 8546
